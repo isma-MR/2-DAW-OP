@@ -1,6 +1,10 @@
 package es.cesguiro.service.impl;
 
 import es.cesguiro.exception.BusinessException;
+import es.cesguiro.mapper.BookMapper;
+import es.cesguiro.model.Author;
+import es.cesguiro.model.Book;
+import es.cesguiro.model.Publisher;
 import es.cesguiro.repository.BookRepository;
 import es.cesguiro.repository.entity.AuthorEntity;
 import es.cesguiro.repository.entity.BookEntity;
@@ -338,13 +342,61 @@ class BookServiceImplTest {
             );
         }
     }
-    // test findByIsbn when book exists
+    @Nested
+    class CreateBookTests {
+        @Test
+        @DisplayName("Given valid book should create book")
+        void create_ValidBook_ShouldCreateBook() {
+            // Arrange
+            Book newBook = new Book(
+                    "999",
+                    "NewTitleEs",
+                    "NewTitleEn",
+                    "NewSynopsisEs",
+                    "NewSynopsisEn",
+                    new BigDecimal("25.00"),
+                    15,
+                    "newcover.jpg",
+                    LocalDate.of(2023, 5, 1),
+                    new Publisher("NewPublisher", "newpublisher-slug"),
+                    List.of(new Author("NewAuthor", "NewCountry", "NewBioEs", "NewBioEn", 1980, null, "newauthor-slug"))
+            );
+            BookDto newBookDto = BookMapper.getInstance().fromBookToBookDto(newBook);
+            BookEntity newBookEntity = BookMapper.getInstance().fromBookToBookEntity(newBook);
 
-    // test findByIsbn when book does not exist
+            when(bookRepository.findByIsbn(newBook.getIsbn())).thenReturn(Optional.empty());
+            when(bookRepository.save(Mockito.any(BookEntity.class))).thenReturn(newBookEntity);
 
-    // test getByIsbn when book exists
+            // Act
+            BookDto createdBook = bookServiceImpl.create(newBookDto);
 
-    // test getByIsbn when book does not exist
+            // Assert
+            assertAll(
+                    () -> assertNotNull(createdBook, "Created book should not be null"),
+                    () -> assertEquals(newBook.getIsbn(), createdBook.isbn(), "ISBN should match"),
+                    () -> assertEquals(newBook.getTitleEs(), createdBook.titleEs(), "TitleEs should match"),
+                    () -> assertEquals(newBook.getTitleEn(), createdBook.titleEn(), "TitleEn should match"),
+                    () -> assertEquals(newBook.getSynopsisEs(), createdBook.synopsisEs(), "SynopsisEs should match"),
+                    () -> assertEquals(newBook.getSynopsisEn(), createdBook.synopsisEn(), "SynopsisEn should match"),
+                    () -> assertEquals(newBook.getBasePrice(), createdBook.basePrice(), "BasePrice should match"),
+                    () -> assertEquals(newBook.getDiscountPercentage(), createdBook.discountPercentage(), "DiscountPercentage should match"),
+                    () -> assertEquals(newBook.getCover(), createdBook.cover(), "Cover should match"),
+                    () -> assertEquals(newBook.getPublicationDate(), createdBook.publicationDate(), "PublicationDate should match"),
+                    () -> assertNotNull(createdBook.publisher(), "Publisher should not be null"),
+                    () -> assertEquals(newBook.getPublisher().getName(), createdBook.publisher().name(), "Publisher name should match"),
+                    () -> assertEquals(newBook.getPublisher().getSlug(), createdBook.publisher().slug(), "Publisher slug should match"),
+                    () -> assertNotNull(createdBook.authors(), "Authors should not be null"),
+                    () -> assertEquals(1, createdBook.authors().size(), "Authors size should be 1"),
+                    () -> assertEquals(newBook.getAuthors().get(0).getName(), createdBook.authors().get(0).name(), "Author name should match"),
+                    () -> assertEquals(newBook.getAuthors().get(0).getNationality(), createdBook.authors().get(0).nationality(), "Author nationality should match"),
+                    () -> assertEquals(newBook.getAuthors().get(0).getBiographyEs(), createdBook.authors().get(0).biographyEs(), "Author biographyEs should match"),
+                    () -> assertEquals(newBook.getAuthors().get(0).getBiographyEn(), createdBook.authors().get(0).biographyEn(), "Author biographyEn should match"),
+                    () -> assertEquals(newBook.getAuthors().get(0).getBirthYear(), createdBook.authors().get(0).birthYear(), "Author birthYear should match"),
+                    () -> assertNull(createdBook.authors().get(0).deathYear(), "Author deathYear should be null"),
+                    () -> assertEquals(newBook.getAuthors().get(0).getSlug(), createdBook.authors().get(0).slug(), "Author slug should match")
+            );
+        }
+    }
 
     // test create book
 

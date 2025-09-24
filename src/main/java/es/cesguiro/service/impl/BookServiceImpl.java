@@ -62,7 +62,15 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto create(BookDto bookDto) {
-        return null;
+        Book book = BookMapper.getInstance().fromBookDtoToBook(bookDto);
+        BookEntity bookEntity = BookMapper.getInstance().fromBookToBookEntity(book);
+        Optional<BookDto> bookDtoFinded= findByIsbn(book.getIsbn());
+        if (bookDtoFinded.isEmpty()) {
+            Book bookCreated= BookMapper.getInstance().fromBookEntityToBook(bookRepository.save(bookEntity));
+            return BookMapper.getInstance().fromBookToBookDto(bookCreated);
+        } else {
+            throw new BusinessException("Book with isbn " + bookDto.isbn() + " already exists");
+        }
     }
 
     @Override
