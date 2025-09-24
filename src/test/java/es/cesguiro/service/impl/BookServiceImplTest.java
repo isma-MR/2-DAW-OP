@@ -316,7 +316,7 @@ class BookServiceImplTest {
         }
     }
     // test findByIsbn when book exists
-
+    // Ismael es gay
     // test findByIsbn when book does not exist
 
     // test create book
