@@ -31,6 +31,9 @@ public class AuthorMapper {
     }
 
     public AuthorEntity fromAuthorToAuthorEntity(Author author) {
+        if (author == null){
+            return null;
+        }
         return new AuthorEntity(
                 author.getName(),
                 author.getNationality(),
@@ -43,6 +46,9 @@ public class AuthorMapper {
     }
 
     public AuthorDto fromAuthorToAuthorDto(Author author) {
+        if (author == null){
+            return null;
+        }
         return new AuthorDto(
                 author.getName(),
                 author.getNationality(),
@@ -55,6 +61,9 @@ public class AuthorMapper {
     }
 
     public Author fromAuthorDtoToAuthor(AuthorDto authorDto) {
+        if (authorDto == null){
+            return null;
+        }
         return new Author(
                 authorDto.name(),
                 authorDto.nationality(),

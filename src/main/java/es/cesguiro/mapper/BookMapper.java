@@ -1,10 +1,12 @@
 package es.cesguiro.mapper;
 
 import es.cesguiro.exception.BusinessException;
+import es.cesguiro.model.Author;
 import es.cesguiro.model.Book;
 import es.cesguiro.repository.entity.BookEntity;
 import es.cesguiro.service.dto.BookDto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BookMapper {
@@ -25,6 +27,10 @@ public class BookMapper {
         if (bookEntity == null) {
             return null;
         }
+        List<Author> authors = new ArrayList<>();
+        if (bookEntity.authors() != null) {
+            authors = bookEntity.authors().stream().map(AuthorMapper.getInstance()::fromAuthorEntityToAuthor).toList();
+        }
         return new Book(
                 bookEntity.isbn(),
                 bookEntity.titleEs(),
@@ -36,7 +42,7 @@ public class BookMapper {
                 bookEntity.cover(),
                 bookEntity.publicationDate(),
                 PublisherMapper.getInstance().fromPublisherEntityToPublisher(bookEntity.publisher()),
-                bookEntity.authors().stream().map(AuthorMapper.getInstance()::fromAuthorEntityToAuthor).toList()
+                authors
         );
     }
 
