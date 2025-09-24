@@ -1,12 +1,14 @@
 package es.cesguiro.service.impl;
 
 import es.cesguiro.mapper.BookMapper;
+import es.cesguiro.model.Book;
 import es.cesguiro.repository.entity.BookEntity;
 import es.cesguiro.service.dto.BookDto;
 import es.cesguiro.exception.BusinessException;
 import es.cesguiro.repository.BookRepository;
 import es.cesguiro.service.BookService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +37,9 @@ public class BookServiceImpl implements BookService {
             return List.of();
         }
 
+
         return entities.stream()
+                .filter(entity -> entity.authors() != null && !entity.authors().isEmpty())
                 .map(BookMapper.getInstance()::fromBookEntityToBook)
                 .map(BookMapper.getInstance()::fromBookToBookDto)
                 .toList();

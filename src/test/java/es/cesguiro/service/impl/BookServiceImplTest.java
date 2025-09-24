@@ -211,8 +211,8 @@ class BookServiceImplTest {
             int page = 0;
             int size = 10;
             boolean validSize;
-
-            when(bookRepository.findAll(page, size)).thenReturn(bookEntities);
+            List<BookEntity> bookEntities1 = List.of(bookEntities.get(0), bookEntities.get(1), bookEntities.get(2));
+            when(bookRepository.findAll(page, size)).thenReturn(bookEntities1);
 
 
             // Act
@@ -221,13 +221,11 @@ class BookServiceImplTest {
             // Assert
             assertAll(
                     () -> assertNotNull(result, "Result should not be null"),
-                    () -> assertEquals(bookEntities.size(), result.size(), "Result size should be 2"),
+                    () -> assertEquals(bookEntities1.size(), result.size(), "Result size should be 3"),
                     () -> assertTrue(validSize, "Result size should be less than or equal to the requested size"),
                     () -> assertEquals("123", result.get(0).isbn(), "First book ISBN should match"),
                     () -> assertEquals("456", result.get(1).isbn(), "Second book ISBN should match"),
-                    () -> assertEquals("789", result.get(2).isbn(), "Third book ISBN should match"),
-                    () -> assertEquals("101112", result.get(3).isbn(), "Fourth book ISBN should match"),
-                    () -> assertEquals("131415", result.get(4).isbn(), "Fifth book ISBN should match")
+                    () -> assertEquals("789", result.get(2).isbn(), "Third book ISBN should match")
             );
 
             // Verify interaction with mock
@@ -250,6 +248,31 @@ class BookServiceImplTest {
             // Assert
             assertAll(
                     () -> assertTrue(result.isEmpty(), "Result should be empty")
+            );
+            // Verify interaction with mock
+            Mockito.verify(bookRepository).findAll(page, size);
+        }
+
+        @Test
+        @DisplayName("findAll without authors should not return that book")
+        void findAll_WithoutAuthors_ShouldNotReturnThatBook(){
+            // Arrange
+            int page = 0;
+            int size = 10;
+
+            when(bookRepository.findAll(page, size)).thenReturn(bookEntities);
+
+            // Act
+            List<BookDto> result = bookServiceImpl.findAll(page, size);
+            // Assert
+            assertAll(
+                    () -> assertEquals(result.size(), 3, "Result size should be 3"),
+                    () -> assertNotNull(result.get(0).authors(), "Result should return not null"),
+                    () -> assertNotNull(result.get(1).authors(), "Result should return not null"),
+                    () -> assertNotNull(result.get(2).authors(), "Result should return not null"),
+                    () -> assertNotEquals(result.get(0).authors(), List.of(),"Result should return true"),
+                    () -> assertNotEquals(result.get(1).authors(), List.of(),"Result should return true"),
+                    () -> assertNotEquals(result.get(2).authors(), List.of(),"Result should return true")
             );
             // Verify interaction with mock
             Mockito.verify(bookRepository).findAll(page, size);
@@ -316,8 +339,12 @@ class BookServiceImplTest {
         }
     }
     // test findByIsbn when book exists
-    // Ismael es gay
+
     // test findByIsbn when book does not exist
+
+    // test getByIsbn when book exists
+
+    // test getByIsbn when book does not exist
 
     // test create book
 
