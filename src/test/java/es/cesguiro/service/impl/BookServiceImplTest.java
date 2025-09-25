@@ -396,6 +396,34 @@ class BookServiceImplTest {
                     () -> assertEquals(newBook.getAuthors().get(0).getSlug(), createdBook.authors().get(0).slug(), "Author slug should match")
             );
         }
+
+        @Test
+        @DisplayName("Given existing book should throws exception")
+        void create_ExistingBook_ShouldThrowException() {
+            // Arrange
+            Book newBook = new Book(
+                    "999",
+                    "NewTitleEs",
+                    "NewTitleEn",
+                    "NewSynopsisEs",
+                    "NewSynopsisEn",
+                    new BigDecimal("25.00"),
+                    15,
+                    "newcover.jpg",
+                    LocalDate.of(2023, 5, 1),
+                    new Publisher("NewPublisher", "newpublisher-slug"),
+                    List.of(new Author("NewAuthor", "NewCountry", "NewBioEs", "NewBioEn", 1980, null, "newauthor-slug"))
+            );
+            BookDto newBookDto = BookMapper.getInstance().fromBookToBookDto(newBook);
+            BookEntity newBookEntity = BookMapper.getInstance().fromBookToBookEntity(newBook);
+
+            when(bookRepository.findByIsbn(newBook.getIsbn())).thenReturn(Optional.of(newBookEntity));
+
+            // Act
+
+            // Assert
+            assertThrows(BusinessException.class, () -> bookServiceImpl.create(newBookDto));
+        }
     }
 
     // test create book
