@@ -144,7 +144,7 @@ public class Book {
     }
 
     public void setAuthors(List<Author> authors) {
-        if (authors.isEmpty()){
+        if (authors.isEmpty() || authors == null) {
             throw new IllegalArgumentException("A book must have at least one author");
         }
         this.authors = authors;

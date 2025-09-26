@@ -441,11 +441,26 @@ class BookServiceImplTest {
 
             assertThrows(IllegalArgumentException.class, () -> bookServiceImpl.create(bookDto));
         }
+
+        @Test
+        @DisplayName("Given book with null list actors should throw exception")
+        void create_BookWithNullListAuthors_ShouldThrowException() {
+            BookDto bookDto = new BookDto(
+                    "999",
+                    "NewTitleEs",
+                    "NewTitleEn",
+                    "NewSynopsisEs",
+                    "NewSynopsisEn",
+                    new BigDecimal("25.00"),
+                    0,
+                    new BigDecimal("25.00"),
+                    "newcover.jpg",
+                    LocalDate.of(2022, 1, 1),
+                    new PublisherDto("NewPublisher", "newpublisher-slug"),
+                    null
+            );
+
+            assertThrows(IllegalArgumentException.class, () -> bookServiceImpl.create(bookDto));
+        }
     }
-
-    // test create book with invalid data
-
-    // test create book with non-existing authors
-    // .....
-
 }

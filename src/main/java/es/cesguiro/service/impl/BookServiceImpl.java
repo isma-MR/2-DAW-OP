@@ -62,6 +62,9 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto create(BookDto bookDto) {
+        if (bookDto.authors() == null || bookDto.authors().isEmpty()) {
+            throw new IllegalArgumentException("A book must have at least one author");
+        }
         Book book = BookMapper.getInstance().fromBookDtoToBook(bookDto);
         BookEntity bookEntity = BookMapper.getInstance().fromBookToBookEntity(book);
         Optional<BookDto> bookDtoFinded= findByIsbn(book.getIsbn());
