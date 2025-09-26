@@ -44,7 +44,7 @@ public class Book {
         this.cover = cover;
         this.publicationDate = publicationDate;
         this.publisher = publisher;
-        this.authors = authors;
+        setAuthors(authors);
     }
 
     public String getIsbn() {
@@ -144,10 +144,14 @@ public class Book {
     }
 
     public void setAuthors(List<Author> authors) {
+        if (authors.isEmpty()){
+            throw new IllegalArgumentException("A book must have at least one author");
+        }
         this.authors = authors;
     }
 
     public void addAuthor(Author author) {
+
         this.authors.add(author);
     }
 

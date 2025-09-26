@@ -10,6 +10,7 @@ import es.cesguiro.repository.entity.AuthorEntity;
 import es.cesguiro.repository.entity.BookEntity;
 import es.cesguiro.repository.entity.PublisherEntity;
 import es.cesguiro.service.dto.BookDto;
+import es.cesguiro.service.dto.PublisherDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -420,12 +421,31 @@ class BookServiceImplTest {
 
             assertThrows(BusinessException.class, () -> bookServiceImpl.create(existingBookDto));
         }
+        @Test
+        @DisplayName("Given book with enpty list actors should throw exception")
+        void create_BookWithEmptyListAuthors_ShouldThrowException() {
+            BookDto bookDto = new BookDto(
+                    "999",
+                    "NewTitleEs",
+                    "NewTitleEn",
+                    "NewSynopsisEs",
+                    "NewSynopsisEn",
+                    new BigDecimal("25.00"),
+                    0,
+                    new BigDecimal("25.00"),
+                    "newcover.jpg",
+                    LocalDate.of(2022, 1, 1),
+                    new PublisherDto("NewPublisher", "newpublisher-slug"),
+                    List.of()
+            );
+
+            assertThrows(IllegalArgumentException.class, () -> bookServiceImpl.create(bookDto));
+        }
     }
 
     // test create book with invalid data
 
     // test create book with non-existing authors
-
     // .....
 
 }
