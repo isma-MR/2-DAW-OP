@@ -400,35 +400,27 @@ class BookServiceImplTest {
         @Test
         @DisplayName("Given existing book should throws exception")
         void create_ExistingBook_ShouldThrowException() {
-            // Arrange
-            Book newBook = new Book(
-                    "999",
-                    "NewTitleEs",
-                    "NewTitleEn",
-                    "NewSynopsisEs",
-                    "NewSynopsisEn",
-                    new BigDecimal("25.00"),
-                    15,
-                    "newcover.jpg",
-                    LocalDate.of(2023, 5, 1),
-                    new Publisher("NewPublisher", "newpublisher-slug"),
-                    List.of(new Author("NewAuthor", "NewCountry", "NewBioEs", "NewBioEn", 1980, null, "newauthor-slug"))
+            Book existingBook =  new Book (
+                    "123",
+                    "TituloExistenteEs",
+                    "TituloExistenteEn",
+                    "SinopsisExistenteEs",
+                    "SinopsisExistenteEn",
+                    new BigDecimal("12.00"),
+                    10,
+                    "coverexistente.jpg",
+                    LocalDate.of(2022, 1, 1),
+                    new Publisher("EditorialExistente", "editorialexistente-slug"),
+                    List.of(new Author("AutorExistente", "PaisExistente", "BioEs", "BioEn", 1980, null, "autorexistente-slug"))
             );
-            BookDto newBookDto = BookMapper.getInstance().fromBookToBookDto(newBook);
-            BookEntity newBookEntity = BookMapper.getInstance().fromBookToBookEntity(newBook);
+            BookDto existingBookDto = BookMapper.getInstance().fromBookToBookDto(existingBook);
+            BookEntity existingBookEntity = BookMapper.getInstance().fromBookToBookEntity(existingBook);
 
-            when(bookRepository.findByIsbn(newBook.getIsbn())).thenReturn(Optional.of(newBookEntity));
+            when(bookRepository.findByIsbn(existingBook.getIsbn())).thenReturn(Optional.of(existingBookEntity));
 
-            // Act
-
-            // Assert
-            assertThrows(BusinessException.class, () -> bookServiceImpl.create(newBookDto));
+            assertThrows(BusinessException.class, () -> bookServiceImpl.create(existingBookDto));
         }
     }
-
-    // test create book
-
-    // test create book with existing isbn
 
     // test create book with invalid data
 
