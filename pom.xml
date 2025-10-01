@@ -41,6 +41,8 @@
         <org.junit.version>5.10.3</org.junit.version>
         <org.mockito.version>5.12.0</org.mockito.version>
         <org.apache.maven.plugins.version>3.5.2</org.apache.maven.plugins.version>
+        <jakarta.validation.version>3.1.0</jakarta.validation.version>
+        <org.hibernate.validator.version>8.0.1.Final</org.hibernate.validator.version>
     </properties>
 
     <dependencies>
@@ -55,6 +57,16 @@
             <artifactId>mockito-junit-jupiter</artifactId>
             <version>${org.mockito.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>${jakarta.validation.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>${org.hibernate.validator.version}</version>
         </dependency>
     </dependencies>
 
