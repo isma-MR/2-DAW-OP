@@ -12,13 +12,14 @@ class AuthorMapperTest {
     @DisplayName("Test map AuthorEntity to Author")
     void toAuthor() {
         // Arrange
-        AuthorEntity authorEntity = new AuthorEntity("name", "nationality", "biographyEs", "biographyEn", 1990, 2020, "slug");
+        AuthorEntity authorEntity = new AuthorEntity(1L, "name", "nationality", "biographyEs", "biographyEn", 1990, 2020, "slug");
 
         // Act
         var author = AuthorMapper.getInstance().fromAuthorEntityToAuthor(authorEntity);
 
         // Assert
         assertAll(
+                () -> assertEquals(authorEntity.id(), author.getId(), "IDs should match"),
                 () -> assertEquals(authorEntity.name(), author.getName(), "Names should match"),
                 () -> assertEquals(authorEntity.nationality(), author.getNationality(), "Nationalities should match"),
                 () -> assertEquals(authorEntity.biographyEs(), author.getBiographyEs(), "BiographyEs should match"),
@@ -44,8 +45,8 @@ class AuthorMapperTest {
     void toAuthorList() {
         // Arrange
         var authorEntities = java.util.List.of(
-                new AuthorEntity("name1", "nationality1", "biographyEs1", "biographyEn1", 1990, 2020, "slug1"),
-                new AuthorEntity("name2", "nationality2", "biographyEs2", "biographyEn2", 1980, null, "slug2")
+                new AuthorEntity(1L, "name1", "nationality1", "biographyEs1", "biographyEn1", 1990, 2020, "slug1"),
+                new AuthorEntity(2L, "name2", "nationality2", "biographyEs2", "biographyEn2", 1980, null, "slug2")
         );
 
         // Act
@@ -58,6 +59,7 @@ class AuthorMapperTest {
                     var author1 = authors.get(0);
                     var entity1 = authorEntities.get(0);
                     assertAll(
+                            () -> assertEquals(entity1.id(), author1.getId(), "IDs should match"),
                             () -> assertEquals(entity1.name(), author1.getName(), "Names should match"),
                             () -> assertEquals(entity1.nationality(), author1.getNationality(), "Nationalities should match"),
                             () -> assertEquals(entity1.biographyEs(), author1.getBiographyEs(), "BiographyEs should match"),
@@ -71,6 +73,7 @@ class AuthorMapperTest {
                     var author2 = authors.get(1);
                     var entity2 = authorEntities.get(1);
                     assertAll(
+                            () -> assertEquals(entity2.id(), author2.getId(), "IDs should match"),
                             () -> assertEquals(entity2.name(), author2.getName(), "Names should match"),
                             () -> assertEquals(entity2.nationality(), author2.getNationality(), "Nationalities should match"),
                             () -> assertEquals(entity2.biographyEs(), author2.getBiographyEs(), "BiographyEs should match"),

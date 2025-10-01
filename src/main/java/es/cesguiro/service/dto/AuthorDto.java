@@ -1,6 +1,7 @@
 package es.cesguiro.service.dto;
 
 public record AuthorDto(
+        Long id,
         String name,
         String nationality,
         String biographyEs,
