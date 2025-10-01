@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import static es.cesguiro.validation.DtoValidator.validate;
+
 public record BookDto(
         Long id,
         @NotNull
@@ -26,13 +28,17 @@ public record BookDto(
         LocalDate publicationDate,
         @NotNull
         PublisherDto publisher,
-        @NotNull
-        @NotEmpty
         List<AuthorDto> authors
 ) {
-    public BookDto{
-        if (titleEn == null && titleEs == null) {
+    public BookDto {
+        if (titleEs == null && titleEn == null) {
             throw new ValidationException("Al menos uno de los títulos (español o inglés) debe estar presente.");
+        }
+
+        if (authors == null) {
+            authors = List.of();
+        } else {
+            authors = List.copyOf(authors);
         }
     }
 }
