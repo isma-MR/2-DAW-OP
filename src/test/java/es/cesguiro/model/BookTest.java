@@ -46,7 +46,7 @@ class BookTest {
     @DisplayName("Test add Author to Book")
     void testAddAuthorToBook() {
         ArrayList<Author> authors = new ArrayList<>();
-        Author existingAuthor = new Author("Existing Author", null, null, null, 1900, null, null);
+        Author existingAuthor = new Author(1L, "Existing Author", null, null, null, 1900, null, null);
         authors.add(existingAuthor);
         Book book = new Book(
                 "978-3-16-148410-0",
@@ -62,6 +62,7 @@ class BookTest {
                 authors
         );
         Author author = new Author(
+                2L,
                 "Author Name",
                 "nationality",
                 "BioEs",
@@ -90,6 +91,7 @@ class BookTest {
                 null
         );
         Author author = new Author(
+                1L,
                 "Author Name",
                 "nationality",
                 "BioEs",
@@ -105,6 +107,7 @@ class BookTest {
     @DisplayName("Add existing Author to Book")
     void addExistingAuthorToBook() {
         Author author = new Author(
+                1L,
                 "Author Name",
                 "nationality",
                 "BioEs",

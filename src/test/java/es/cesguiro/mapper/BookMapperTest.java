@@ -37,8 +37,8 @@ class BookMapperTest {
         );
         book.setPublisher(new Publisher("Publisher Name", "publisher-slug"));
         book.setAuthors(List.of(
-                new Author("Author One", "nationality1", "Bio1", "Bio1En", 1970, null, "author-one"),
-                new Author("Author Two", "nationality2", "Bio2", "Bio2En", 1980, 2020, "author-two")
+                new Author(1L, "Author One", "nationality1", "Bio1", "Bio1En", 1970, null, "author-one"),
+                new Author(2L, "Author Two", "nationality2", "Bio2", "Bio2En", 1980, 2020, "author-two")
         ));
 
         // Act
@@ -90,8 +90,8 @@ class BookMapperTest {
                 LocalDate.of(2020, 1, 1),
                 new PublisherEntity("Publisher Name", "publisher-slug"),
                 List.of(
-                        new AuthorEntity("Author One", "nationality1", "Bio1", "Bio1En", 1970, null, "author-one"),
-                        new AuthorEntity("Author Two", "nationality2", "Bio2", "Bio2En", 1980, 2020, "author-two")
+                        new AuthorEntity(1L, "Author One", "nationality1", "Bio1", "Bio1En", 1970, null, "author-one"),
+                        new AuthorEntity(2L, "Author Two", "nationality2", "Bio2", "Bio2En", 1980, 2020, "author-two")
                 )
         );
 
