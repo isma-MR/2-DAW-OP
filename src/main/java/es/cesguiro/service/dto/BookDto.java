@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record BookDto(
+        Long id,
         String isbn,
         String titleEs,
         String titleEn,

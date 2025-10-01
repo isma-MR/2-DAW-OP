@@ -24,6 +24,7 @@ public class PublisherMapper {
             return null;
         }
         return new Publisher(
+                publisherEntity.id(),
                 publisherEntity.name(),
                 publisherEntity.slug()
         );
@@ -34,6 +35,7 @@ public class PublisherMapper {
             return null;
         }
         return new PublisherEntity(
+                publisher.getId(),
                 publisher.getName(),
                 publisher.getSlug()
         );
@@ -44,6 +46,7 @@ public class PublisherMapper {
             return null;
         }
         return new PublisherDto(
+                publisher.getId(),
                 publisher.getName(),
                 publisher.getSlug()
         );
@@ -54,6 +57,7 @@ public class PublisherMapper {
             return null;
         }
         return new Publisher(
+                publisherDto.id(),
                 publisherDto.name(),
                 publisherDto.slug()
         );

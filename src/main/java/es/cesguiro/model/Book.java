@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public class Book {
-
+    private long id;
     private String isbn;
     private String titleEs;
     private String titleEn;
@@ -21,6 +21,7 @@ public class Book {
     private List<Author> authors;
 
     public Book(
+            Long id,
             String isbn,
             String titleEs,
             String titleEn,
@@ -33,6 +34,7 @@ public class Book {
             Publisher publisher,
             List<Author> authors
     ) {
+        this.id = id;
         this.isbn = isbn;
         this.titleEs = titleEs;
         this.titleEn = titleEn;
@@ -53,6 +55,14 @@ public class Book {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getTitleEs() {

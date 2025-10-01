@@ -32,6 +32,7 @@ public class BookMapper {
             authors = bookEntity.authors().stream().map(AuthorMapper.getInstance()::fromAuthorEntityToAuthor).toList();
         }
         return new Book(
+                bookEntity.id(),
                 bookEntity.isbn(),
                 bookEntity.titleEs(),
                 bookEntity.titleEn(),
@@ -51,6 +52,7 @@ public class BookMapper {
             return null;
         }
         return new BookEntity(
+                book.getId(),
                 book.getIsbn(),
                 book.getTitleEs(),
                 book.getTitleEn(),
@@ -70,6 +72,7 @@ public class BookMapper {
             return null;
         }
         return new BookDto(
+                book.getId(),
                 book.getIsbn(),
                 book.getTitleEs(),
                 book.getTitleEn(),
@@ -91,6 +94,7 @@ public class BookMapper {
             return  null;
         }
         return new Book(
+                bookDto.id(),
                 bookDto.isbn(),
                 bookDto.titleEs(),
                 bookDto.titleEn(),

@@ -23,6 +23,7 @@ class BookMapperTest {
     void toBookDto() {
         // Arrange
         var book = new Book(
+                1L,
                 "978-84-376-0494-7",
                 "TitleEs",
                 "TitleEn",
@@ -35,7 +36,7 @@ class BookMapperTest {
                 null,
                 null
         );
-        book.setPublisher(new Publisher("Publisher Name", "publisher-slug"));
+        book.setPublisher(new Publisher(1L,"Publisher Name", "publisher-slug"));
         book.setAuthors(List.of(
                 new Author("Author One", "nationality1", "Bio1", "Bio1En", 1970, null, "author-one"),
                 new Author("Author Two", "nationality2", "Bio2", "Bio2En", 1980, 2020, "author-two")
@@ -46,6 +47,7 @@ class BookMapperTest {
 
         // Assert
         assertAll(
+                () -> assertEquals(book.getId(), bookDto.id(), "ID should match"),
                 () -> assertEquals(book.getIsbn(), bookDto.isbn(), "ISBN should match"),
                 () -> assertEquals(book.getTitleEs(), bookDto.titleEs(), "TitleEs should match"),
                 () -> assertEquals(book.getTitleEn(), bookDto.titleEn(), "TitleEn should match"),
@@ -79,6 +81,7 @@ class BookMapperTest {
     void toBook() {
         // Arrange
         var bookEntity = new BookEntity(
+                1L,
                 "978-84-376-0494-7",
                 "TitleEs",
                 "TitleEn",
@@ -88,7 +91,7 @@ class BookMapperTest {
                 10,
                 "cover.jpg",
                 LocalDate.of(2020, 1, 1),
-                new PublisherEntity("Publisher Name", "publisher-slug"),
+                new PublisherEntity(1L,"Publisher Name", "publisher-slug"),
                 List.of(
                         new AuthorEntity("Author One", "nationality1", "Bio1", "Bio1En", 1970, null, "author-one"),
                         new AuthorEntity("Author Two", "nationality2", "Bio2", "Bio2En", 1980, 2020, "author-two")
@@ -100,6 +103,7 @@ class BookMapperTest {
 
         // Assert
         assertAll(
+                () -> assertEquals(bookEntity.id(), book.getId(), "ID should match"),
                 () -> assertEquals(bookEntity.isbn(), book.getIsbn(), "ISBN should match"),
                 () -> assertEquals(bookEntity.titleEs(), book.getTitleEs(), "TitleEs should match"),
                 () -> assertEquals(bookEntity.titleEn(), book.getTitleEn(), "TitleEn should match"),

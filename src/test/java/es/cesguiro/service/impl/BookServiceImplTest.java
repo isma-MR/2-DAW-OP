@@ -40,6 +40,7 @@ class BookServiceImplTest {
     // Mock books
     List<BookEntity> bookEntities = List.of(
         new BookEntity(
+            1L,
             "123",
             "TitleEs1",
             "TitleEn1",
@@ -49,10 +50,11 @@ class BookServiceImplTest {
             5,
             "cover1.jpg",
             LocalDate.of(2020, 1, 1),
-            new PublisherEntity("Publisher1", "publisher1-slug"),
+            new PublisherEntity(1L,"Publisher1", "publisher1-slug"),
             List.of(new AuthorEntity("Author1", "Country1", "BioEs1", "BioEn1", 1970, null, "author1-slug"))
         ),
         new BookEntity(
+            2L,
             "456",
             "TitleEs2",
             "TitleEn2",
@@ -62,10 +64,11 @@ class BookServiceImplTest {
             10,
             "cover2.jpg",
             LocalDate.of(2021, 6, 15),
-            new PublisherEntity("Publisher2", "publisher2-slug"),
+            new PublisherEntity(2L,"Publisher2", "publisher2-slug"),
             List.of(new AuthorEntity("Author2", "Country2", "BioEs2", "BioEn2", 1950, null, "author2-slug"))
         ),
         new BookEntity(
+            3L,
             "789",
             "TitleEs3",
             "TitleEn3",
@@ -75,10 +78,11 @@ class BookServiceImplTest {
             3,
             "cover3.png",
             LocalDate.of(2019, 3, 10),
-            new PublisherEntity("Publisher3", "publisher3-slug"),
+            new PublisherEntity(3L,"Publisher3", "publisher3-slug"),
             List.of(new AuthorEntity("Author3", "Country3", "BioEs3", "BioEn3", 1985, null, "author3-slug"))
         ),
         new BookEntity(
+            4L,
             "101112",
             "TitleEs4",
             "TitleEn4",
@@ -88,10 +92,11 @@ class BookServiceImplTest {
             7,
             "cover4.png",
             LocalDate.of(2018, 11, 5),
-            new PublisherEntity("Publisher4", "publisher4-slug"),
+            new PublisherEntity(4L,"Publisher4", "publisher4-slug"),
             null
         ),
         new BookEntity(
+            5L,
             "131415",
             "TitleEs5",
             "TitleEn5",
@@ -101,7 +106,7 @@ class BookServiceImplTest {
             2,
             "cover5.jpg",
             LocalDate.of(2022, 8, 20),
-            new PublisherEntity("Publisher5", "publisher5-slug"),
+            new PublisherEntity(5L,"Publisher5", "publisher5-slug"),
             List.of()
         )
     );
@@ -343,6 +348,7 @@ class BookServiceImplTest {
             );
         }
     }
+
     @Nested
     class CreateBookTests {
         @Test
@@ -350,6 +356,7 @@ class BookServiceImplTest {
         void create_ValidBook_ShouldCreateBook() {
             // Arrange
             Book newBook = new Book(
+                    1L,
                     "999",
                     "NewTitleEs",
                     "NewTitleEn",
@@ -359,7 +366,7 @@ class BookServiceImplTest {
                     15,
                     "newcover.jpg",
                     LocalDate.of(2023, 5, 1),
-                    new Publisher("NewPublisher", "newpublisher-slug"),
+                    new Publisher(1L,"NewPublisher", "newpublisher-slug"),
                     List.of(new Author("NewAuthor", "NewCountry", "NewBioEs", "NewBioEn", 1980, null, "newauthor-slug"))
             );
             BookDto newBookDto = BookMapper.getInstance().fromBookToBookDto(newBook);
@@ -402,6 +409,7 @@ class BookServiceImplTest {
         @DisplayName("Given existing book should throws exception")
         void create_ExistingBook_ShouldThrowException() {
             Book existingBook =  new Book (
+                    1L,
                     "123",
                     "TituloExistenteEs",
                     "TituloExistenteEn",
@@ -411,7 +419,7 @@ class BookServiceImplTest {
                     10,
                     "coverexistente.jpg",
                     LocalDate.of(2022, 1, 1),
-                    new Publisher("EditorialExistente", "editorialexistente-slug"),
+                    new Publisher(1L,"EditorialExistente", "editorialexistente-slug"),
                     List.of(new Author("AutorExistente", "PaisExistente", "BioEs", "BioEn", 1980, null, "autorexistente-slug"))
             );
             BookDto existingBookDto = BookMapper.getInstance().fromBookToBookDto(existingBook);
@@ -425,6 +433,7 @@ class BookServiceImplTest {
         @DisplayName("Given book with enpty list actors should throw exception")
         void create_BookWithEmptyListAuthors_ShouldThrowException() {
             BookDto bookDto = new BookDto(
+                    1L,
                     "999",
                     "NewTitleEs",
                     "NewTitleEn",
@@ -435,7 +444,7 @@ class BookServiceImplTest {
                     new BigDecimal("25.00"),
                     "newcover.jpg",
                     LocalDate.of(2022, 1, 1),
-                    new PublisherDto("NewPublisher", "newpublisher-slug"),
+                    new PublisherDto(1L,"NewPublisher", "newpublisher-slug"),
                     List.of()
             );
 

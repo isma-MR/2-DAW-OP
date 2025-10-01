@@ -26,6 +26,7 @@ class BookTest {
     })
     void calculateFinalPrice(String basePrice, double discountPercentage, String expectedPrice) {
         Book book = new Book(
+                1L,
                 "978-3-16-148410-0",
                 "Título en Español",
                 "Title in English",
@@ -49,6 +50,7 @@ class BookTest {
         Author existingAuthor = new Author("Existing Author", null, null, null, 1900, null, null);
         authors.add(existingAuthor);
         Book book = new Book(
+                1L,
                 "978-3-16-148410-0",
                 "Título en Español",
                 "Title in English",
@@ -77,6 +79,7 @@ class BookTest {
     @DisplayName("Add Author to Book with null Authors list")
     void addAuthorToBookWithNullAuthorsList() {
         Book book = new Book(
+                1l,
                 "978-3-16-148410-0",
                 "Título en Español",
                 "Title in English",
@@ -114,6 +117,7 @@ class BookTest {
                 "slug");
 
         Book book = new Book(
+                1L,
                 "978-3-16-148410-0",
                 "Título en Español",
                 "Title in English",
