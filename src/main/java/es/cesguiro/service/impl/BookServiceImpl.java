@@ -27,8 +27,7 @@ public class BookServiceImpl implements BookService {
         if (books == null || books.isEmpty()) {
             throw new BusinessException("There is no books in the system");
         }
-        return bookRepository
-                .findAll(page, size).stream()
+        return books.stream()
                 .map(BookMapper.getInstance()::fromBookEntityToBook)
                 .map(BookMapper.getInstance()::fromBookToBookDto)
                 .toList();
@@ -42,7 +41,7 @@ public class BookServiceImpl implements BookService {
                 .findByIsbn(isbn)
                 .map(BookMapper.getInstance()::fromBookEntityToBook)
                 .map(BookMapper.getInstance()::fromBookToBookDto)
-                .orElseThrow(ResolutionException::new);
+                .orElseThrow(() -> new BusinessException("Book with isbn " + isbn + " not found"));
     }
 
     @Override

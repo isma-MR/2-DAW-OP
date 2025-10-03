@@ -41,7 +41,7 @@ class BookServiceImplTest {
     List<BookEntity> bookEntities = List.of(
         new BookEntity(
             1L,
-            "123",
+            "1111111111111",
             "TitleEs1",
             "TitleEn1",
             "SynopsisEs1",
@@ -57,7 +57,7 @@ class BookServiceImplTest {
         ),
         new BookEntity(
             2L,
-            "456",
+            "2222222222222",
             "TitleEs2",
             "TitleEn2",
             "SynopsisEs2",
@@ -71,7 +71,7 @@ class BookServiceImplTest {
         ),
         new BookEntity(
             3L,
-            "789",
+            "3333333333333",
             "TitleEs3",
             "TitleEn3",
             "SynopsisEs3",
@@ -86,7 +86,7 @@ class BookServiceImplTest {
         ),
         new BookEntity(
             4L,
-            "101112",
+            "4444444444444",
             "TitleEs4",
             "TitleEn4",
             "SynopsisEs4",
@@ -100,7 +100,7 @@ class BookServiceImplTest {
         ),
         new BookEntity(
             5L,
-            "131415",
+            "5555555555555",
             "TitleEs5",
             "TitleEn5",
             "SynopsisEs5",
@@ -134,11 +134,11 @@ class BookServiceImplTest {
                     () -> assertNotNull(result, "Result should not be null"),
                     () -> assertEquals(bookEntities.size(), result.size(), "Result size should be " + bookEntities.size()),
                     () -> assertTrue(validSize, "Result size should be less than or equal to the requested size"),
-                    () -> assertEquals("123", result.get(0).isbn(), "First book ISBN should match"),
-                    () -> assertEquals("456", result.get(1).isbn(), "Second book ISBN should match"),
-                    () -> assertEquals("789", result.get(2).isbn(), "Third book ISBN should match"),
-                    () -> assertEquals("101112", result.get(3).isbn(), "Fourth book ISBN should match"),
-                    () -> assertEquals("131415", result.get(4).isbn(), "Fifth book ISBN should match")
+                    () -> assertEquals(bookEntities.get(0).isbn(), result.get(0).isbn(), "First book ISBN should match"),
+                    () -> assertEquals(bookEntities.get(1).isbn(), result.get(1).isbn(), "Second book ISBN should match"),
+                    () -> assertEquals(bookEntities.get(2).isbn(), result.get(2).isbn(), "Third book ISBN should match"),
+                    () -> assertEquals(bookEntities.get(3).isbn(), result.get(3).isbn(), "Fourth book ISBN should match"),
+                    () -> assertEquals(bookEntities.get(4).isbn(), result.get(4).isbn(), "Fifth book ISBN should match")
             );
 
             // Verify interaction with mock
@@ -169,7 +169,7 @@ class BookServiceImplTest {
         @DisplayName("Given valid isbn should return book")
         void getByIsbn_ValidIsbn_ShouldReturnBook() {
             // Arrange
-            String isbn = "123";
+            String isbn = "1111111111111";
 
             when(bookRepository.findByIsbn(isbn)).thenReturn(Optional.of(bookEntities.get(0)));
 
@@ -207,7 +207,7 @@ class BookServiceImplTest {
         @DisplayName("Given invalid isbn should throw exception")
         void getByIsbn_InvalidIsbn_ShouldThrowException() {
             // Arrange
-            String isbn = "999";
+            String isbn = "9999999999999";
             when(bookRepository.findByIsbn(isbn)).thenReturn(Optional.empty());
 
             // Act & Assert
