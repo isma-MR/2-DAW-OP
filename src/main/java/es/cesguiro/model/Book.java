@@ -1,5 +1,7 @@
 package es.cesguiro.model;
 
+import es.cesguiro.exception.BusinessException;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -154,14 +156,13 @@ public class Book {
     }
 
     public void setAuthors(List<Author> authors) {
-        if (authors.isEmpty() || authors == null) {
-            throw new IllegalArgumentException("A book must have at least one author");
-        }
         this.authors = authors;
     }
 
     public void addAuthor(Author author) {
-
+        if (this.authors.contains(author)) {
+            throw new BusinessException("Author already exists");
+        }
         this.authors.add(author);
     }
 

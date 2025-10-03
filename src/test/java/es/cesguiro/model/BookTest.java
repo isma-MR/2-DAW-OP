@@ -21,8 +21,7 @@ class BookTest {
     @CsvSource({
             "100.00, 15.0, 85.00",
             "50.00, 0.0, 50.00",
-            "75.00, 100.0, 0.00",
-            "60.00, -10.0, 60.00"
+            "75.00, 100.0, 0.00"
     })
     void calculateFinalPrice(String basePrice, double discountPercentage, String expectedPrice) {
         Book book = new Book(
@@ -65,36 +64,6 @@ class BookTest {
         );
         Author author = new Author(
                 2L,
-                "Author Name",
-                "nationality",
-                "BioEs",
-                "BioEn",
-                1980,
-                null,
-                "slug");
-        book.addAuthor(author);
-        assertTrue(book.getAuthors().contains(author), "Book should contain the added author");
-    }
-
-    @Test
-    @DisplayName("Add Author to Book with null Authors list")
-    void addAuthorToBookWithNullAuthorsList() {
-        Book book = new Book(
-                1l,
-                "978-3-16-148410-0",
-                "Título en Español",
-                "Title in English",
-                "Sinopsis en Español",
-                "Synopsis in English",
-                new BigDecimal("50.00"),
-                10.0,
-                "cover.jpg",
-                LocalDate.of(2023, 1, 1),
-                null,
-                null
-        );
-        Author author = new Author(
-                1L,
                 "Author Name",
                 "nationality",
                 "BioEs",

@@ -18,7 +18,10 @@ public class AuthorMapper {
         return instance;
     }
 
-    public Author fromAuthorEntityToAuthor(es.cesguiro.repository.entity.AuthorEntity authorEntity) {
+    public Author fromAuthorEntityToAuthor(AuthorEntity authorEntity) {
+        if (authorEntity == null){
+            throw new BusinessException("AuthorEntity cannot be null");
+        }
         return new Author(
                 authorEntity.id(),
                 authorEntity.name(),

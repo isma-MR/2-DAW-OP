@@ -8,6 +8,7 @@ import es.cesguiro.exception.BusinessException;
 import es.cesguiro.repository.BookRepository;
 import es.cesguiro.service.BookService;
 
+import java.lang.module.ResolutionException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,42 +23,26 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<BookDto> getAll(int page, int size) {
-        List<BookDto> bookDtos = findAll(page, size);
-        if (bookDtos.isEmpty()) {
-            throw new BusinessException("No books found");
+        List<BookEntity> books = bookRepository.findAll(page, size);
+        if (books == null || books.isEmpty()) {
+            throw new BusinessException("There is no books in the system");
         }
-        return bookDtos;
-    }
-
-    @Override
-    public List<BookDto> findAll(int page, int size) {
-        List<BookEntity> entities = bookRepository.findAll(page, size); // solo una llamada
-
-        if (entities == null) {
-            return List.of();
-        }
-
-
-        return entities.stream()
-                .filter(entity -> entity.authors() != null && !entity.authors().isEmpty())
+        return bookRepository
+                .findAll(page, size).stream()
                 .map(BookMapper.getInstance()::fromBookEntityToBook)
                 .map(BookMapper.getInstance()::fromBookToBookDto)
                 .toList();
     }
 
 
-    @Override
-    public BookDto getByIsbn(String isbn) {
-        return findByIsbn(isbn)
-                .orElseThrow(() -> new BusinessException("Book with isbn " + isbn + " not found"));
-    }
 
     @Override
-    public Optional<BookDto> findByIsbn(String isbn) {
+    public BookDto getByIsbn(String isbn) {
         return bookRepository
                 .findByIsbn(isbn)
                 .map(BookMapper.getInstance()::fromBookEntityToBook)
-                .map(BookMapper.getInstance()::fromBookToBookDto);
+                .map(BookMapper.getInstance()::fromBookToBookDto)
+                .orElseThrow(ResolutionException::new);
     }
 
     @Override
@@ -67,7 +52,10 @@ public class BookServiceImpl implements BookService {
         }
         Book book = BookMapper.getInstance().fromBookDtoToBook(bookDto);
         BookEntity bookEntity = BookMapper.getInstance().fromBookToBookEntity(book);
-        Optional<BookDto> bookDtoFinded= findByIsbn(book.getIsbn());
+        Optional<BookDto> bookDtoFinded= bookRepository
+                .findByIsbn(bookDto.isbn())
+                .map(BookMapper.getInstance()::fromBookEntityToBook)
+                .map(BookMapper.getInstance()::fromBookToBookDto);
         if (bookDtoFinded.isEmpty()) {
             Book bookCreated= BookMapper.getInstance().fromBookEntityToBook(bookRepository.save(bookEntity));
             return BookMapper.getInstance().fromBookToBookDto(bookCreated);

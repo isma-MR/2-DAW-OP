@@ -10,9 +10,11 @@ public record AuthorDto(
 
         @NotBlank(message = "La nacionalidad no puede estar vacía")
         String nationality,
+
         String biographyEs,
         String biographyEn,
 
+        @NotNull(message = "El año de nacimiento es obligatorio")
         @Min(value = 0, message = "El año de nacimiento debe ser positivo")
         int birthYear,
 
