@@ -49,7 +49,7 @@ public class BookMapper {
 
     public BookEntity fromBookToBookEntity(Book book) {
         if (book == null) {
-            return null;
+            throw  new BusinessException("Book is null");
         }
         return new BookEntity(
                 book.getId(),
@@ -69,7 +69,7 @@ public class BookMapper {
 
     public BookDto fromBookToBookDto(Book book) {
         if (book == null) {
-            throw new BusinessException("Book cannot be null");
+            return null;
         }
         return new BookDto(
                 book.getId(),
