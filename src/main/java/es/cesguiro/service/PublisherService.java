@@ -14,5 +14,5 @@ public interface PublisherService {
 
     PublisherDto update(PublisherDto publisherDto);
 
-    PublisherDto delete(String slug);
+    int delete(String slug);
 }

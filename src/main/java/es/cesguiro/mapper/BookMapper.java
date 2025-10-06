@@ -25,7 +25,7 @@ public class BookMapper {
 
     public Book fromBookEntityToBook(BookEntity bookEntity) {
         if (bookEntity == null) {
-            return null;
+            throw new BusinessException("BookEntity cannot be null");
         }
         List<Author> authors = new ArrayList<>();
         if (bookEntity.authors() != null) {
@@ -49,7 +49,7 @@ public class BookMapper {
 
     public BookEntity fromBookToBookEntity(Book book) {
         if (book == null) {
-            return null;
+            throw new BusinessException("Book cannot be null");
         }
         return new BookEntity(
                 book.getId(),
@@ -91,7 +91,7 @@ public class BookMapper {
 
     public Book fromBookDtoToBook(BookDto bookDto) {
         if (bookDto == null) {
-            return  null;
+            throw new BusinessException("BookDto cannot be null");
         }
         return new Book(
                 bookDto.id(),

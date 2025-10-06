@@ -8,6 +8,7 @@ import es.cesguiro.repository.entity.AuthorEntity;
 import es.cesguiro.repository.entity.BookEntity;
 import es.cesguiro.repository.entity.PublisherEntity;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -17,7 +18,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BookMapperTest {
-
     @Test
     @DisplayName("Test map Book to BookDto")
     void toBookDto() {
