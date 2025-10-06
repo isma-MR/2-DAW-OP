@@ -2,6 +2,7 @@ package es.cesguiro.mapper;
 
 import es.cesguiro.model.Author;
 import es.cesguiro.repository.entity.AuthorEntity;
+import es.cesguiro.service.dto.AuthorDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -36,13 +37,14 @@ class AuthorMapperTest {
         }
 
         @Test
-        @DisplayName("Test map null AuthorEntity to Author throws BusinessException")
-        void toAuthor_NullAuthorEntity_ThrowsBusinessException() {
+        @DisplayName("Test map null AuthorEntity to Author returns null")
+        void toAuthor_NullAuthorEntity_ReturnNull() {
             // Arrange
             AuthorEntity authorEntity = null;
-            // Act & Assert
-            var exception = assertThrows(es.cesguiro.exception.BusinessException.class, () -> AuthorMapper.getInstance().fromAuthorEntityToAuthor(authorEntity));
-            assertEquals("AuthorEntity cannot be null", exception.getMessage());
+            // Act
+            Author author = AuthorMapper.getInstance().fromAuthorEntityToAuthor(authorEntity);
+            // Assert
+            assertNull(author, "Mapping null AuthorEntity should return null Author");
         }
 
         @Test
@@ -191,13 +193,11 @@ class AuthorMapperTest {
         }
 
         @Test
-        @DisplayName("Test map null Author to AuthorDto throws BusinessException")
-        void toAuthorDto_NullAuthor_ThrowsBusinessException() {
+        @DisplayName("Test map null Author to AuthorDto returns null")
+        void toAuthorDto_NullAuthor_ReturnNull() {
             Author author = null;
-
-            var exception = assertThrows(es.cesguiro.exception.BusinessException.class, () -> AuthorMapper.getInstance().fromAuthorToAuthorDto(author));
-
-            assertEquals("Author cannot be null", exception.getMessage());
+            AuthorDto authorDto = AuthorMapper.getInstance().fromAuthorToAuthorDto(author);
+            assertNull(authorDto, "Mapping null Author should return null AuthorDto");
         }
 
         @Test

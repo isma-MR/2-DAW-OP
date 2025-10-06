@@ -2,6 +2,7 @@ package es.cesguiro.mapper;
 
 import es.cesguiro.model.Publisher;
 import es.cesguiro.repository.entity.PublisherEntity;
+import es.cesguiro.service.dto.PublisherDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -28,13 +29,11 @@ class PublisherMapperTest {
         }
 
         @Test
-        @DisplayName("Test map null PublisherEntity to Publisher throws BusinessException")
-        void toPublisher_NullPublisherEntity_ThrowsBusinessException() {
+        @DisplayName("Test map null PublisherEntity to Publisher returns null")
+        void toPublisher_NullPublisherEntity_ReturnsNull() {
             PublisherEntity publisherEntity = null;
-
-            var exception = assertThrows(es.cesguiro.exception.BusinessException.class, () -> PublisherMapper.getInstance().fromPublisherEntityToPublisher(publisherEntity));
-
-            assertEquals("PublisherEntity cannot be null", exception.getMessage());
+            Publisher publisher = PublisherMapper.getInstance().fromPublisherEntityToPublisher(publisherEntity);
+            assertNull(publisher, "Mapping null PublisherEntity should return null Publisher");
         }
 
         @Test
@@ -150,13 +149,11 @@ class PublisherMapperTest {
         }
 
         @Test
-        @DisplayName("Test map null Publisher to PublisherDto throws BusinessException")
-        void toPublisherDto_NullPublisher_ThrowsBusinessException() {
+        @DisplayName("Test map null Publisher to PublisherDto returns null")
+        void toPublisherDto_NullPublisher_ReturnNull() {
             Publisher publisher = null;
-
-            var exception = assertThrows(es.cesguiro.exception.BusinessException.class, () -> PublisherMapper.getInstance().fromPublisherToPublisherDto(publisher));
-
-            assertEquals("Publisher cannot be null", exception.getMessage());
+            PublisherDto publisherDto = PublisherMapper.getInstance().fromPublisherToPublisherDto(publisher);
+            assertNull(publisherDto, "Mapping null Publisher should return null PublisherDto");
         }
 
         @Test
