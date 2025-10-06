@@ -36,7 +36,7 @@ public class AuthorMapper {
 
     public AuthorEntity fromAuthorToAuthorEntity(Author author) {
         if (author == null){
-            return null;
+            throw  new BusinessException("Author cannot be null");
         }
         return new AuthorEntity(
                 author.getId(),
@@ -52,7 +52,7 @@ public class AuthorMapper {
 
     public AuthorDto fromAuthorToAuthorDto(Author author) {
         if (author == null){
-            return null;
+            throw new BusinessException("Author cannot be null");
         }
         return new AuthorDto(
                 author.getId(),
@@ -68,7 +68,7 @@ public class AuthorMapper {
 
     public Author fromAuthorDtoToAuthor(AuthorDto authorDto) {
         if (authorDto == null){
-            return null;
+            throw new BusinessException("AuthorDto cannot be null");
         }
         return new Author(
                 authorDto.id(),
