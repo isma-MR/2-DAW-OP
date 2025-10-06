@@ -49,11 +49,7 @@ public class BookMapper {
 
     public BookEntity fromBookToBookEntity(Book book) {
         if (book == null) {
-<<<<<<< HEAD
             throw new BusinessException("Book cannot be null");
-=======
-            throw  new BusinessException("Book is null");
->>>>>>> aa8b326e3246ebe172c3d265dfe131910d8f1754
         }
         return new BookEntity(
                 book.getId(),
