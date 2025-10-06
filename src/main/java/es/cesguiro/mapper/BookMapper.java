@@ -91,7 +91,7 @@ public class BookMapper {
 
     public Book fromBookDtoToBook(BookDto bookDto) {
         if (bookDto == null) {
-            return  null;
+            throw new BusinessException("BookDto cannot be null");
         }
         return new Book(
                 bookDto.id(),
