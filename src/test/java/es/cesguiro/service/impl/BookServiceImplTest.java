@@ -9,6 +9,7 @@ import es.cesguiro.repository.BookRepository;
 import es.cesguiro.repository.entity.AuthorEntity;
 import es.cesguiro.repository.entity.BookEntity;
 import es.cesguiro.repository.entity.PublisherEntity;
+import es.cesguiro.service.dto.AuthorDto;
 import es.cesguiro.service.dto.BookDto;
 import es.cesguiro.service.dto.PublisherDto;
 import org.junit.jupiter.api.DisplayName;
@@ -50,7 +51,6 @@ class BookServiceImplTest {
             5,
             "cover1.jpg",
             LocalDate.of(2020, 1, 1),
-
             new PublisherEntity(1L,"Publisher1", "publisher1-slug"),
             List.of(new AuthorEntity(1L, "Author1", "Country1", "BioEs1", "BioEn1", 1970, null, "author1-slug"))
 
@@ -295,24 +295,13 @@ class BookServiceImplTest {
 
             assertThrows(BusinessException.class, () -> bookServiceImpl.create(existingBookDto));
         }
+
         @Test
-        @DisplayName("Given book with enpty list actors should throw exception")
+        @DisplayName("Given book with empty list actors should throw exception")
         void create_BookWithEmptyListAuthors_ShouldThrowException() {
-            BookDto bookDto = new BookDto(
-                    1L,
-                    "999",
-                    "NewTitleEs",
-                    "NewTitleEn",
-                    "NewSynopsisEs",
-                    "NewSynopsisEn",
-                    new BigDecimal("25.00"),
-                    0,
-                    new BigDecimal("25.00"),
-                    "newcover.jpg",
-                    LocalDate.of(2022, 1, 1),
-                    new PublisherDto(1L,"NewPublisher", "newpublisher-slug"),
-                    List.of()
-            );
+            Book existingBook = BookMapper.getInstance().fromBookEntityToBook(bookEntities.get(4));
+
+            BookDto bookDto = BookMapper.getInstance().fromBookToBookDto(existingBook);
 
             assertThrows(IllegalArgumentException.class, () -> bookServiceImpl.create(bookDto));
         }
@@ -320,23 +309,76 @@ class BookServiceImplTest {
         @Test
         @DisplayName("Given book with null list actors should throw exception")
         void create_BookWithNullListAuthors_ShouldThrowException() {
-            BookDto bookDto = new BookDto(
-                    1L,
-                    "999",
-                    "NewTitleEs",
-                    "NewTitleEn",
-                    "NewSynopsisEs",
-                    "NewSynopsisEn",
-                    new BigDecimal("25.00"),
-                    0,
-                    new BigDecimal("25.00"),
-                    "newcover.jpg",
-                    LocalDate.of(2022, 1, 1),
-                    new PublisherDto(1L,"NewPublisher", "newpublisher-slug"),
-                    null
-            );
+            Book existingBook = BookMapper.getInstance().fromBookEntityToBook(bookEntities.get(3));
+
+            BookDto bookDto = BookMapper.getInstance().fromBookToBookDto(existingBook);
 
             assertThrows(IllegalArgumentException.class, () -> bookServiceImpl.create(bookDto));
+        }
+    }
+
+    @Nested
+    class UpdateBookTests {
+        @Test
+        @DisplayName("Given valid book should update book")
+        void update_ValidBook_ShouldUpdateBook() {
+            // Arrange
+            Book existingBook = BookMapper.getInstance().fromBookEntityToBook(bookEntities.get(0));
+            existingBook.setTitleEs("UpdatedTitleEs");
+            existingBook.setTitleEn("UpdatedTitleEn");
+
+            BookDto updatedBookDto = BookMapper.getInstance().fromBookToBookDto(existingBook);
+            BookEntity updatedBookEntity = BookMapper.getInstance().fromBookToBookEntity(existingBook);
+
+            when(bookRepository.findById(existingBook.getId())).thenReturn(Optional.of(bookEntities.get(0)));
+            when(bookRepository.update(Mockito.any(BookEntity.class))).thenReturn(updatedBookEntity);
+
+            // Act
+            BookDto result = bookServiceImpl.update(updatedBookDto);
+
+            // Assert
+            assertAll(
+                    () -> assertNotNull(result, "Result should not be null"),
+                    () -> assertEquals(existingBook.getIsbn(), result.isbn(), "ISBN should match"),
+                    () -> assertEquals("UpdatedTitleEs", result.titleEs(), "TitleEs should match"),
+                    () -> assertEquals("UpdatedTitleEn", result.titleEn(), "TitleEn should match")
+            );
+        }
+
+        @Test
+        @DisplayName("Given invalid book id should throw exception")
+        void update_InvalidId_ShouldThrowException() {
+            // Arrange
+            BookDto bookDto = new BookDto(999L, "1234567890123", "Invalid Book", "Invalid Book En", "Invalid Synopsis Es", "Invalid Synopsis En", new BigDecimal("20.00"), 10, new BigDecimal("18.00"),"invalid-cover.jpg", LocalDate.now(), new PublisherDto(1L, "Publisher", "publisher-slug"), List.of(new AuthorDto(1L, "Author", "Country", "Bio Es", "Bio En", 1980, null, "author-slug")));
+
+            when(bookRepository.findById(bookDto.id())).thenReturn(Optional.empty());
+
+            // Act & Assert
+            assertThrows(BusinessException.class, () -> bookServiceImpl.update(bookDto));
+        }
+    }
+
+    @Nested
+    class DeleteBookTests {
+        @Test
+        @DisplayName("Given valid isbn should delete book")
+        void delete_ValidIsbn_ShouldDeleteBook() {
+            String isbn = "1111111111111";
+
+            Book existingBook = BookMapper.getInstance().fromBookEntityToBook(bookEntities.get(0));
+
+            when(bookRepository.findByIsbn(isbn)).thenReturn(Optional.of(BookMapper.getInstance().fromBookToBookEntity(existingBook)));
+            Mockito.doNothing().when(bookRepository).delete(isbn);
+            assertDoesNotThrow(() -> bookServiceImpl.delete(isbn));
+            Mockito.verify(bookRepository).delete(isbn);
+        }
+
+        @Test
+        @DisplayName("Given invalid isbn should throw exception")
+        void delete_InvalidIsbn_ShouldThrowException() {
+            String isbn = "9999999999999";
+            when(bookRepository.findByIsbn(isbn)).thenReturn(Optional.empty());
+            assertThrows(BusinessException.class, () -> bookServiceImpl.delete(isbn));
         }
     }
 }

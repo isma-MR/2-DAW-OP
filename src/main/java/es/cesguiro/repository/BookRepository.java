@@ -13,4 +13,10 @@ public interface BookRepository {
     Optional<BookEntity> findByIsbn(String isbn);
 
     BookEntity save(BookEntity bookEntity);
+
+    BookEntity update(BookEntity bookEntity);
+
+    void delete(String isbn);
+
+    Optional<BookEntity> findById(Long id);
 }

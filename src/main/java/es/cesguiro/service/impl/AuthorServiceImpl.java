@@ -1,6 +1,8 @@
 package es.cesguiro.service.impl;
 
+import es.cesguiro.exception.BusinessException;
 import es.cesguiro.mapper.AuthorMapper;
+import es.cesguiro.mapper.BookMapper;
 import es.cesguiro.model.Author;
 import es.cesguiro.repository.AuthorRepository;
 import es.cesguiro.repository.entity.AuthorEntity;
@@ -19,12 +21,23 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public List<AuthorDto> getAll() {
-        return List.of();
+        List<AuthorEntity> authorEntities = authorRepository.findAll();
+        if (authorEntities == null || authorEntities.isEmpty()) {
+            throw new BusinessException("There is no books in the system");
+        }
+        return authorEntities.stream()
+                .map(AuthorMapper.getInstance()::fromAuthorEntityToAuthor)
+                .map(AuthorMapper.getInstance()::fromAuthorToAuthorDto)
+                .toList();
     }
 
     @Override
     public AuthorDto getBySlug(String slug) {
-        return null;
+        return authorRepository
+                .findBySlug(slug)
+                .map(AuthorMapper.getInstance()::fromAuthorEntityToAuthor)
+                .map(AuthorMapper.getInstance()::fromAuthorToAuthorDto)
+                .orElseThrow(() -> new BusinessException("Author with slug " + slug + " not found"));
     }
 
     @Override
@@ -37,12 +50,16 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto update(AuthorDto authorDto) {
-        return null;
+    public AuthorDto update(String slug, AuthorDto authorDto) {
+        Author author = AuthorMapper.getInstance().fromAuthorDtoToAuthor(authorDto);
+        AuthorEntity authorEntity = AuthorMapper.getInstance().fromAuthorToAuthorEntity(author);
+        AuthorEntity updatedAuthorEntity = authorRepository.update(slug, authorEntity);
+        Author updatedAuthor = AuthorMapper.getInstance().fromAuthorEntityToAuthor(updatedAuthorEntity);
+        return AuthorMapper.getInstance().fromAuthorToAuthorDto(updatedAuthor);
     }
 
     @Override
     public int delete(String slug) {
-        return 0;
+        return authorRepository.delete(slug);
     }
 }

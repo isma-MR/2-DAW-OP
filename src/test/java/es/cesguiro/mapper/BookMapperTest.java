@@ -76,10 +76,8 @@ class BookMapperTest {
         void toBook_NullBookEntity_ReturnsNull() {
             // Arrange
             BookEntity bookEntity = null;
-            // Act
-            Book book = BookMapper.getInstance().fromBookEntityToBook(bookEntity);
             // Assert
-            assertNull(book, "Mapping null BookEntity should return null Book");
+            assertThrows(BusinessException.class, () -> BookMapper.getInstance().fromBookEntityToBook(bookEntity), "Mapping null BookEntity should return null Book");
         }
     }
 
@@ -196,14 +194,12 @@ class BookMapperTest {
         }
 
         @Test
-        @DisplayName("Test map null Book to BookDto returns null")
-        void toBookDto_NullBook_ReturnNull() {
-            // Arrange
+        @DisplayName("Test map null Book to BookDto should throw BusinessException")
+        void toBookDto_NullBook_ShoudThrowBusinessException() {
             Book book = null;
-            // Act & Assert
-            assertNull(BookMapper.getInstance().fromBookToBookDto(book), "Mapping null Book should return null BookDto");
-        }
 
+            assertThrows(BusinessException.class, () -> BookMapper.getInstance().fromBookToBookDto(book), "Mapping null Book should throw BusinessException");
+        }
     }
 
     @Nested

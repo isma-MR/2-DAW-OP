@@ -1,12 +1,17 @@
 package es.cesguiro.service.impl;
 
+import es.cesguiro.mapper.AuthorMapper;
 import es.cesguiro.mapper.BookMapper;
+import es.cesguiro.mapper.PublisherMapper;
+import es.cesguiro.model.Author;
 import es.cesguiro.model.Book;
+import es.cesguiro.repository.entity.AuthorEntity;
 import es.cesguiro.repository.entity.BookEntity;
 import es.cesguiro.service.dto.BookDto;
 import es.cesguiro.exception.BusinessException;
 import es.cesguiro.repository.BookRepository;
 import es.cesguiro.service.BookService;
+import es.cesguiro.validation.DtoValidator;
 
 import java.lang.module.ResolutionException;
 import java.util.ArrayList;
@@ -65,11 +70,24 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto update(BookDto bookDto) {
-        return null;
+        boolean exists = bookRepository.findById(bookDto.id()).isPresent();
+        if (!exists) {
+            throw new BusinessException("Book with id " + bookDto.id() + " not found");
+        }
+
+        Book book = BookMapper.getInstance().fromBookDtoToBook(bookDto);
+        BookEntity bookEntity = BookMapper.getInstance().fromBookToBookEntity(book);
+        BookEntity updatedBookEntity = bookRepository.update(bookEntity);
+        Book updatedBook = BookMapper.getInstance().fromBookEntityToBook(updatedBookEntity);
+        return BookMapper.getInstance().fromBookToBookDto(updatedBook);
     }
 
     @Override
     public void delete(String isbn) {
-
+        boolean exists = bookRepository.findByIsbn(isbn).isPresent();
+        if (!exists) {
+            throw new BusinessException("Book with isbn " + isbn + " not found");
+        }
+        bookRepository.delete(isbn);
     }
 }

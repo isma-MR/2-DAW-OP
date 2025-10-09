@@ -12,7 +12,7 @@ public interface AuthorService {
 
     AuthorDto create(AuthorDto authorDto);
 
-    AuthorDto update(AuthorDto authorDto);
+    AuthorDto update(String slug,AuthorDto authorDto);
 
     int delete(String slug);
 }

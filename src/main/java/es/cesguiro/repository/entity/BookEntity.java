@@ -18,4 +18,7 @@ public record BookEntity(
         PublisherEntity publisher,
         List<AuthorEntity> authors
 ) {
+    public boolean isPresent() {
+        return id != null;
+    }
 }
